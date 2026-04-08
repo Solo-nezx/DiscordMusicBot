@@ -76,7 +76,7 @@ FILTER_LABELS: dict[str, str] = {
 _COOKIES_FILE = "cookies.txt" if os.path.exists("cookies.txt") else None
 
 _YDL_BASE = {
-    "format":             "bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio/best",
+    "format":             "bestaudio*",
     "nocheckcertificate": True,
     "ignoreerrors":       False,
     "quiet":              True,
@@ -91,7 +91,7 @@ YDL_PLAYLIST_OPTS = {**_YDL_BASE, "noplaylist": False, "playlistend": 50}
 
 
 def _ffmpeg_opts(seek: int = 0, audio_filter: str | None = None) -> dict:
-    before  = "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
+    before  = "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 -reconnect_on_network_error 1"
     if seek > 0:
         before = f"-ss {seek} " + before
     options = f"-vn -af \"{audio_filter}\"" if audio_filter else "-vn"
