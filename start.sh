@@ -1,4 +1,5 @@
 #!/bin/bash
-set -e
+echo "⏳ Waiting 10 seconds before start..."
+sleep 10
 echo "🚀 Starting Music Bot…"
-python bot.py
+exec python bot.py
