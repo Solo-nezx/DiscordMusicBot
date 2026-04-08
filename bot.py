@@ -2,6 +2,7 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
+import base64
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -19,6 +20,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
+
+# Write cookies.txt from environment variable if provided
+_cookies_b64 = os.getenv("YOUTUBE_COOKIES")
+if _cookies_b64:
+    try:
+        with open("cookies.txt", "wb") as _f:
+            _f.write(base64.b64decode(_cookies_b64))
+        print("✅ cookies.txt loaded from environment variable")
+    except Exception as _e:
+        print(f"⚠️ Failed to load cookies: {_e}")
 
 # ─────────────────────────────────────────────
 #  Constants
