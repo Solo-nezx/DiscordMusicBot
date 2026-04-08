@@ -2,6 +2,9 @@
 .env
 *.env
 
+# YouTube cookies (sensitive - never commit)
+cookies.txt
+
 # Python
 __pycache__/
 *.py[cod]
