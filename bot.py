@@ -73,7 +73,21 @@ FILTER_LABELS: dict[str, str] = {
 # ─────────────────────────────────────────────
 #  yt-dlp options
 # ─────────────────────────────────────────────
-_COOKIES_FILE = "cookies.txt" if os.path.exists("cookies.txt") else None
+_COOKIES_FILE  = "cookies.txt" if os.path.exists("cookies.txt") else None
+_PO_TOKEN      = os.getenv("YOUTUBE_PO_TOKEN")
+_VISITOR_DATA  = os.getenv("YOUTUBE_VISITOR_DATA")
+
+if _PO_TOKEN:
+    print(f"✅ PO Token loaded from environment variable")
+if _VISITOR_DATA:
+    print(f"✅ Visitor Data loaded from environment variable")
+
+_YT_EXTRACTOR_ARGS: dict = {}
+if _PO_TOKEN or _VISITOR_DATA:
+    _YT_EXTRACTOR_ARGS = {"youtube": {
+        **({"po_token":     [f"web+{_PO_TOKEN}"]} if _PO_TOKEN     else {}),
+        **({"visitor_data": [_VISITOR_DATA]}       if _VISITOR_DATA else {}),
+    }}
 
 _YDL_BASE = {
     "format":             "bestaudio/best",
@@ -83,6 +97,7 @@ _YDL_BASE = {
     "no_warnings":        True,
     "default_search":     "ytsearch",
     "source_address":     "0.0.0.0",
+    **({"extractor_args": _YT_EXTRACTOR_ARGS} if _YT_EXTRACTOR_ARGS else {}),
     **({"cookiefile": _COOKIES_FILE} if _COOKIES_FILE else {}),
 }
 YDL_OPTS          = {**_YDL_BASE, "noplaylist": True}
