@@ -76,14 +76,14 @@ FILTER_LABELS: dict[str, str] = {
 _COOKIES_FILE = "cookies.txt" if os.path.exists("cookies.txt") else None
 
 _YDL_BASE = {
-    "format":             "bestaudio/best",
+    "format":             "bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio/best",
     "nocheckcertificate": True,
     "ignoreerrors":       False,
     "quiet":              True,
     "no_warnings":        True,
     "default_search":     "ytsearch",
     "source_address":     "0.0.0.0",
-    "extractor_args":     {"youtube": {"player_client": ["ios"]}},
+    "extractor_args":     {"youtube": {"player_client": ["ios", "web"]}},
     **({"cookiefile": _COOKIES_FILE} if _COOKIES_FILE else {}),
 }
 YDL_OPTS          = {**_YDL_BASE, "noplaylist": True}
