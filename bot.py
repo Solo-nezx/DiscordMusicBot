@@ -75,9 +75,6 @@ FILTER_LABELS: dict[str, str] = {
 # ─────────────────────────────────────────────
 _COOKIES_FILE = "cookies.txt" if os.path.exists("cookies.txt") else None
 
-_PO_TOKEN    = os.getenv("YOUTUBE_PO_TOKEN")
-_VISITOR_DATA = os.getenv("YOUTUBE_VISITOR_DATA")
-
 _YDL_BASE = {
     "format":             "bestaudio/best",
     "nocheckcertificate": True,
@@ -86,12 +83,6 @@ _YDL_BASE = {
     "no_warnings":        True,
     "default_search":     "ytsearch",
     "source_address":     "0.0.0.0",
-    "check_formats":      False,
-    "extractor_args":     {"youtube": {
-        "player_client":  ["tv_embedded", "web"],
-        **({"po_token":    [f"web+{_PO_TOKEN}"]} if _PO_TOKEN else {}),
-        **({"visitor_data": [_VISITOR_DATA]}      if _VISITOR_DATA else {}),
-    }},
     **({"cookiefile": _COOKIES_FILE} if _COOKIES_FILE else {}),
 }
 YDL_OPTS          = {**_YDL_BASE, "noplaylist": True}
