@@ -188,11 +188,20 @@ def _extract_info(info: dict) -> dict:
 async def fetch_song(query: str) -> dict | None:
     loop = asyncio.get_running_loop()
     def _fetch():
-        with yt_dlp.YoutubeDL(YDL_OPTS) as ydl:
-            info = ydl.extract_info(query, download=False)
-            if "entries" in info:
-                info = info["entries"][0]
-            return _extract_info(info)
+        # Try formats from most preferred to most permissive
+        for fmt in ("bestaudio/best", "bestaudio", "best[height<=480]", "best", "worst"):
+            try:
+                opts = {**YDL_OPTS, "format": fmt}
+                with yt_dlp.YoutubeDL(opts) as ydl:
+                    info = ydl.extract_info(query, download=False)
+                    if "entries" in info:
+                        info = info["entries"][0]
+                    if info and info.get("url"):
+                        print(f"[yt-dlp] Using format: {fmt}")
+                        return _extract_info(info)
+            except Exception as e:
+                print(f"[yt-dlp] Format '{fmt}' failed: {e}")
+        return None
     try:
         return await loop.run_in_executor(None, _fetch)
     except Exception as e:
