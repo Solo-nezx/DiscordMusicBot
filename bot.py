@@ -83,7 +83,6 @@ _YDL_BASE = {
     "no_warnings":        True,
     "default_search":     "ytsearch",
     "source_address":     "0.0.0.0",
-    "check_formats":      False,
     **({"cookiefile": _COOKIES_FILE} if _COOKIES_FILE else {}),
 }
 YDL_OPTS          = {**_YDL_BASE, "noplaylist": True}
