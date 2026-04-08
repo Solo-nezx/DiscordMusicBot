@@ -502,7 +502,9 @@ async def _refresh_np(p: dict) -> None:
     """Silently refresh the Now Playing embed."""
     if p.get("current") and p.get("np_message"):
         try:
-            await p["np_message"].edit(embed=build_np_embed(p["current"], p))
+            guild_id = p["np_message"].guild.id
+            view = MusicView(bot, guild_id)
+            await p["np_message"].edit(embed=build_np_embed(p["current"], p), view=view)
         except Exception:
             pass
 
@@ -751,15 +753,16 @@ def _start_np_updater(guild: discord.Guild, p: dict) -> None:
 
 
 async def _np_updater(guild: discord.Guild) -> None:
-    """Refresh the progress bar every 20 seconds."""
+    """Refresh the progress bar every 5 seconds."""
     while True:
-        await asyncio.sleep(20)
+        await asyncio.sleep(5)
         p  = players.get(guild.id)
         if not p or not p["current"] or not p["np_message"]: break
         vc = p.get("voice_client")
         if not vc or not (vc.is_playing() or vc.is_paused()): break
         try:
-            await p["np_message"].edit(embed=build_np_embed(p["current"], p))
+            view = MusicView(bot, guild.id)
+            await p["np_message"].edit(embed=build_np_embed(p["current"], p), view=view)
         except Exception:
             break
 
