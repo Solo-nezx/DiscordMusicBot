@@ -62,6 +62,8 @@ FILTER_LABELS: dict[str, str] = {
 # ─────────────────────────────────────────────
 #  yt-dlp options
 # ─────────────────────────────────────────────
+_COOKIES_FILE = "cookies.txt" if os.path.exists("cookies.txt") else None
+
 _YDL_BASE = {
     "format":             "bestaudio/best",
     "nocheckcertificate": True,
@@ -70,6 +72,8 @@ _YDL_BASE = {
     "no_warnings":        True,
     "default_search":     "ytsearch",
     "source_address":     "0.0.0.0",
+    "extractor_args":     {"youtube": {"player_client": ["ios"]}},
+    **({"cookiefile": _COOKIES_FILE} if _COOKIES_FILE else {}),
 }
 YDL_OPTS          = {**_YDL_BASE, "noplaylist": True}
 YDL_PLAYLIST_OPTS = {**_YDL_BASE, "noplaylist": False, "playlistend": 50}
