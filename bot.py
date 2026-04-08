@@ -83,7 +83,7 @@ _YDL_BASE = {
     "no_warnings":        True,
     "default_search":     "ytsearch",
     "source_address":     "0.0.0.0",
-    "extractor_args":     {"youtube": {"player_client": ["android_music"]}},
+    "extractor_args":     {"youtube": {"player_client": ["tv_embedded", "web"]}},
     **({"cookiefile": _COOKIES_FILE} if _COOKIES_FILE else {}),
 }
 YDL_OPTS          = {**_YDL_BASE, "noplaylist": True}
